@@ -207,6 +207,14 @@ var infoObjSize = map[TypeID]int{
 	C_SE_NC_1: 5,
 	C_BO_NA_1: 4,
 
+	C_SC_TA_1: 8,
+	C_DC_TA_1: 8,
+	C_RC_TA_1: 8,
+	C_SE_TA_1: 10,
+	C_SE_TB_1: 10,
+	C_SE_TC_1: 12,
+	C_BO_TA_1: 11,
+
 	M_EI_NA_1: 1,
 
 	C_IC_NA_1: 1,
@@ -511,13 +519,16 @@ func (sf CauseOfTransmission) String() string {
 // CommonAddr is a station address.
 // The width is controlled by Params.CommonAddrSize.
 // width 1:
-//      <0>: 未用
-//      <1..254>: 站地址
-//      <255>: 全局地址
+//
+//	<0>: 未用
+//	<1..254>: 站地址
+//	<255>: 全局地址
+//
 // width 2:
-//      <0>: 未用
-//      <1..65534>: 站地址
-//      <65535>: 全局地址
+//
+//	<0>: 未用
+//	<1..65534>: 站地址
+//	<65535>: 全局地址
 type CommonAddr uint16
 
 // special commonAddr

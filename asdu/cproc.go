@@ -18,6 +18,23 @@ type SingleCommandInfo struct {
 	Time  time.Time
 }
 
+func isValidCommandCOA(coa Cause) bool {
+	switch coa {
+	case Activation, // 6 - Control direction (Master -> Slave)
+		ActivationCon,   // 7 - Monitor direction (Slave -> Master)
+		Deactivation,    // 8 - Control direction (Master -> Slave)
+		DeactivationCon, // 9 - Monitor direction (Slave -> Master)
+		ActivationTerm,  // 10 - Monitor direction (Slave -> Master)
+		UnknownTypeID,   // 44 - Negative confirmation
+		UnknownCOT,      // 45 - Negative confirmation
+		UnknownCA,       // 46 - Negative confirmation
+		UnknownIOA:      // 47 - Negative confirmation
+		return true
+	default:
+		return false
+	}
+}
+
 // SingleCmd sends a type identification [C_SC_NA_1] or [C_SC_TA_1]. 单命令, 只有单个信息对象(SQ = 0)
 // [C_SC_NA_1] See companion standard 101, subclass 7.3.2.1
 // [C_SC_TA_1] See companion standard 101,
@@ -34,7 +51,7 @@ type SingleCommandInfo struct {
 // <46> := 未知的应用服务数据单元公共地址
 // <47> := 未知的信息对象地址
 func SingleCmd(c Connect, typeID TypeID, coa CauseOfTransmission, ca CommonAddr, cmd SingleCommandInfo) error {
-	if !(coa.Cause == Activation || coa.Cause == Deactivation) {
+	if !isValidCommandCOA(coa.Cause) {
 		return ErrCmdCause
 	}
 	if err := c.Params().Valid(); err != nil {
@@ -92,7 +109,7 @@ type DoubleCommandInfo struct {
 // <47> := 未知的信息对象地址
 func DoubleCmd(c Connect, typeID TypeID, coa CauseOfTransmission, ca CommonAddr,
 	cmd DoubleCommandInfo) error {
-	if !(coa.Cause == Activation || coa.Cause == Deactivation) {
+	if !isValidCommandCOA(coa.Cause) {
 		return ErrCmdCause
 	}
 	if err := c.Params().Valid(); err != nil {
@@ -145,7 +162,7 @@ type StepCommandInfo struct {
 // <46> := 未知的应用服务数据单元公共地址
 // <47> := 未知的信息对象地址
 func StepCmd(c Connect, typeID TypeID, coa CauseOfTransmission, ca CommonAddr, cmd StepCommandInfo) error {
-	if !(coa.Cause == Activation || coa.Cause == Deactivation) {
+	if !isValidCommandCOA(coa.Cause) {
 		return ErrCmdCause
 	}
 	if err := c.Params().Valid(); err != nil {
@@ -198,7 +215,7 @@ type SetpointCommandNormalInfo struct {
 // <46> := 未知的应用服务数据单元公共地址
 // <47> := 未知的信息对象地址
 func SetpointCmdNormal(c Connect, typeID TypeID, coa CauseOfTransmission, ca CommonAddr, cmd SetpointCommandNormalInfo) error {
-	if !(coa.Cause == Activation || coa.Cause == Deactivation) {
+	if !isValidCommandCOA(coa.Cause) {
 		return ErrCmdCause
 	}
 	if err := c.Params().Valid(); err != nil {
@@ -250,7 +267,7 @@ type SetpointCommandScaledInfo struct {
 // <46> := 未知的应用服务数据单元公共地址
 // <47> := 未知的信息对象地址
 func SetpointCmdScaled(c Connect, typeID TypeID, coa CauseOfTransmission, ca CommonAddr, cmd SetpointCommandScaledInfo) error {
-	if !(coa.Cause == Activation || coa.Cause == Deactivation) {
+	if !isValidCommandCOA(coa.Cause) {
 		return ErrCmdCause
 	}
 	if err := c.Params().Valid(); err != nil {
@@ -302,7 +319,7 @@ type SetpointCommandFloatInfo struct {
 // <46> := 未知的应用服务数据单元公共地址
 // <47> := 未知的信息对象地址
 func SetpointCmdFloat(c Connect, typeID TypeID, coa CauseOfTransmission, ca CommonAddr, cmd SetpointCommandFloatInfo) error {
-	if !(coa.Cause == Activation || coa.Cause == Deactivation) {
+	if !isValidCommandCOA(coa.Cause) {
 		return ErrCmdCause
 	}
 	if err := c.Params().Valid(); err != nil {
@@ -356,7 +373,7 @@ type BitsString32CommandInfo struct {
 // <47> := 未知的信息对象地址
 func BitsString32Cmd(c Connect, typeID TypeID, coa CauseOfTransmission, commonAddr CommonAddr,
 	cmd BitsString32CommandInfo) error {
-	if !(coa.Cause == Activation || coa.Cause == Deactivation) {
+	if !isValidCommandCOA(coa.Cause) {
 		return ErrCmdCause
 	}
 	if err := c.Params().Valid(); err != nil {
