@@ -297,7 +297,7 @@ func step(c Connect, typeID TypeID, isSequence bool, coa CauseOfTransmission, ca
 		case M_ST_NA_1:
 		case M_ST_TA_1:
 			u.AppendBytes(CP24Time2a(v.Time, u.InfoObjTimeZone)...)
-		case M_SP_TB_1:
+		case M_ST_TB_1:
 			u.AppendBytes(CP56Time2a(v.Time, u.InfoObjTimeZone)...)
 		default:
 			return ErrTypeIDNotMatch
@@ -357,7 +357,7 @@ func StepCP56Time2a(c Connect, coa CauseOfTransmission, ca CommonAddr, infos ...
 		coa.Cause == ReturnInfoRemote || coa.Cause == ReturnInfoLocal) {
 		return ErrCmdCause
 	}
-	return step(c, M_SP_TB_1, false, coa, ca, infos...)
+	return step(c, M_ST_TB_1, false, coa, ca, infos...)
 }
 
 // BitString32Info the measured value attributes.
