@@ -216,6 +216,7 @@ var infoObjSize = map[TypeID]int{
 	C_TS_NA_1: 2,
 	C_RP_NA_1: 1,
 	C_CD_NA_1: 2,
+	C_TS_TA_1: 9,
 
 	P_ME_NA_1: 3,
 	P_ME_NB_1: 3,
